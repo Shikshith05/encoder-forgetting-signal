@@ -14,7 +14,8 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 import numpy as np
 import yaml
 
-# Standard English classnames for Flowers102 (Oxford 102 flower categories)
+# Oxford label order; see torchvision/datasets/flowers102.py. Kept locally for
+# torchvision releases which do not expose Flowers102.classes.
 FLOWERS102_CLASSES: List[str] = [
     "pink primrose", "hard-leaved pocket orchid", "canterbury bells", "sweet pea",
     "english marigold", "tiger lily", "moon orchid", "bird of paradise", "monkshood",
@@ -23,21 +24,21 @@ FLOWERS102_CLASSES: List[str] = [
     "giant white arum lily", "fire lily", "pincushion flower", "fritillary", "red ginger",
     "grape hyacinth", "corn poppy", "prince of wales feathers", "stemless gentian",
     "artichoke", "sweet william", "carnation", "garden phlox", "love in the mist",
-    "mexican aster", "alpine sea holly", "ruby-lipped cattleya", "cape plumbago",
-    "rose", "blackberry lily", "toad lily", "anthurium", "bougainvillea",
-    "camellia", "mallow", "mexican petunia", "bromelia", "blanket flower",
-    "black-eyed susan", "common dandelion", "hard-leaved pocket orchid", "wild pansy",
+    "mexican aster", "alpine sea holly", "ruby-lipped cattleya", "cape flower",
+    "great masterwort", "siam tulip", "lenten rose", "barbeton daisy", "daffodil",
+    "sword lily", "poinsettia", "bolero deep blue", "wallflower", "marigold",
+    "buttercup", "oxeye daisy", "common dandelion", "petunia", "wild pansy",
     "primula", "sunflower", "pelargonium", "bishop of llandaff", "gaura",
     "geranium", "orange dahlia", "pink-yellow dahlia", "cautleya spicata",
     "japanese anemone", "black-eyed susan", "silverbush", "californian poppy",
     "osteospermum", "spring crocus", "bearded iris", "windflower", "tree poppy",
     "gazania", "azalea", "water lily", "rose", "thorn apple",
-    "morning glory", "passion flower", "lotus", "toadflax", "anthurium",
+    "morning glory", "passion flower", "lotus", "toad lily", "anthurium",
     "frangipani", "clematis", "hibiscus", "columbine", "desert-rose",
     "tree mallow", "magnolia", "cyclamen", "watercress", "canna lily",
     "hippeastrum", "bee balm", "ball moss", "foxglove", "bougainvillea",
     "camellia", "mallow", "mexican petunia", "bromelia", "blanket flower",
-    "black-eyed susan", "common dandelion", "wild pansy"
+    "trumpet creeper", "blackberry lily"
 ]
 
 # Standard class names for EuroSAT (satellite land-use classes)
@@ -76,11 +77,15 @@ def load_clip(
     pretrained = cfg["model"]["pretrained"]
 
     model, _, preprocess = open_clip.create_model_and_transforms(
-        model_name, pretrained=pretrained
+        model_name, pretrained=pretrained,
+        # OpenCLIP 3.3 does not automatically apply this pretrained-tag setting.
+        # OpenAI weights require QuickGELU in BOTH towers, including when loading
+        # our own state dict (activation functions are absent from state dicts).
+        force_quick_gelu=pretrained == "openai",
     )
 
     if ckpt is not None:
-        state = torch.load(ckpt, map_location="cpu")
+        state = torch.load(ckpt, map_location="cpu", weights_only=True)
         if isinstance(state, dict):
             for k in ("state_dict", "model"):
                 if k in state and isinstance(state[k], dict):
@@ -115,7 +120,9 @@ def get_dataset_loader(
     """Build a deterministic DataLoader for any of the 4 benchmark datasets.
 
     Supports: 'OxfordIIITPet', 'Flowers102', 'EuroSAT', 'DTD'.
-    Applies the team standard seed (0) and max 2000 test images.
+    Applies the team standard seed (0) and at most 2000 images per split.
+    Pets train maps to trainval. EuroSAT test is the first capped seed-0
+    permutation block; train is the next block, with no overlap.
 
     Returns:
         (DataLoader, list_of_image_ids, list_of_classnames)
@@ -131,9 +138,15 @@ def get_dataset_loader(
 
     ds_name_lower = dataset_name.lower().replace("-", "").replace("_", "")
 
+    if split not in {"train", "test"}:
+        raise ValueError("Use split='train' or split='test'. Pets train maps to trainval.")
+    if not 0 < max_images <= 2000:
+        raise ValueError("max_images must be between 1 and 2000.")
+
     if "pet" in ds_name_lower:
         ds = tv_datasets.OxfordIIITPet(
-            root=root, split=split, download=True, transform=preprocess
+            root=root, split="trainval" if split == "train" else "test",
+            download=True, transform=preprocess
         )
         classnames = [name.replace("_", " ") for name in ds.classes]
 
@@ -162,12 +175,23 @@ def get_dataset_loader(
     generator = torch.Generator().manual_seed(seed)
     total_len = len(ds)
     num_samples = min(total_len, max_images)
-    permuted_idx = torch.randperm(total_len, generator=generator)[:num_samples].tolist()
+    permutation = torch.randperm(total_len, generator=generator)
+    # EuroSAT has no official split. Preserve the shared test subset and select
+    # training images from the remainder of the SAME seed-0 permutation.
+    start = num_samples if "eurosat" in ds_name_lower and split == "train" else 0
+    permuted_idx = permutation[start:start + num_samples].tolist()
+    if not permuted_idx:
+        raise ValueError("No disjoint training images remain after the EuroSAT test holdout.")
 
     subset = Subset(ds, permuted_idx)
-    loader = DataLoader(subset, batch_size=64, shuffle=False, num_workers=2)
+    loader = DataLoader(
+        subset, batch_size=cfg.get("finetune", {}).get("batch_size", 64),
+        shuffle=False, num_workers=data_cfg.get("num_workers", 2),
+        pin_memory=torch.cuda.is_available(),
+    )
 
-    image_ids = [f"{dataset_name}_{idx}" for idx in permuted_idx]
+    prefix = dataset_name if split == "test" else f"{dataset_name}_train"
+    image_ids = [f"{prefix}_{idx}" for idx in permuted_idx]
     return loader, image_ids, classnames
 
 
