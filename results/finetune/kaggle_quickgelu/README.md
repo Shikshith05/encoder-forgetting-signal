@@ -1,9 +1,12 @@
 # Corrected Kaggle Part B results — Shreyas
 
-Reviewed on 10 November 2026 from the four user-supplied files preserved here.
+Reviewed on 10 November 2026 from the latest uploaded checkpoint export.
 This run completed **four base training runs and two triggered sensitivity runs**
 on one Tesla T4. The additional GPU allocated by Kaggle was not used by the code.
-These results supersede the earlier Colab run with the QuickGELU mismatch.
+This directory is the single current result record. Its values supersede earlier
+outputs, including their timing figures. The verified weights and their required
+metadata are kept locally in `checkpoints/`, which is ignored by Git except for
+`.gitkeep`.
 
 ## Implementation and provenance
 
@@ -41,10 +44,10 @@ Negative forgetting denotes an accuracy improvement.
 | Checkpoint | Pets % | Flowers % | EuroSAT % | DTD % | Pets forgetting, pp | Training, s |
 |---|---:|---:|---:|---:|---:|---:|
 | Pretrained (evaluation only) | 85.60 | 64.80 | 35.30 | 43.24 | — | — |
-| Pets | 86.05 | 51.25 | 23.70 | 22.07 | 0.00 | 42.98 |
-| Pets → Flowers | 83.65 | 74.40 | 18.55 | 29.41 | 2.40 | 51.88 |
-| Pets → EuroSAT | 85.35 | 50.25 | 91.10 | 34.89 | 0.70 | 19.01 |
-| Pets → EuroSAT, text frozen | 86.60 | 43.55 | 94.05 | 17.29 | -0.55 | 7.91 |
+| Pets | 86.05 | 51.25 | 23.70 | 22.07 | 0.00 | 41.93 |
+| Pets → Flowers | 83.65 | 74.40 | 18.55 | 29.41 | 2.40 | 49.70 |
+| Pets → EuroSAT | 85.35 | 50.25 | 91.10 | 34.89 | 0.70 | 18.34 |
+| Pets → EuroSAT, text frozen | 86.60 | 43.55 | 94.05 | 17.29 | -0.55 | 7.65 |
 
 Pets fine-tuning improved Pets accuracy from 85.60% to 86.05%. From that checkpoint,
 Flowers accuracy increased from 51.25% to 74.40%, with 2.40 pp Pets forgetting.
@@ -67,8 +70,8 @@ are distinct from the retained base checkpoints.
 
 | Checkpoint | Pets % | Flowers % | EuroSAT % | DTD % | Pets forgetting, pp | Training, s |
 |---|---:|---:|---:|---:|---:|---:|
-| Pets → EuroSAT | 32.30 | 8.00 | 73.55 | 7.02 | 53.75 | 18.78 |
-| Pets → EuroSAT, text frozen | 59.25 | 11.60 | 85.35 | 5.59 | 26.80 | 7.91 |
+| Pets → EuroSAT | 32.30 | 8.00 | 73.55 | 7.02 | 53.75 | 18.13 |
+| Pets → EuroSAT, text frozen | 59.25 | 11.60 | 85.35 | 5.59 | 26.80 | 7.53 |
 
 The stronger full update induced severe forgetting, but its EuroSAT accuracy was
 17.55 pp below the base full update. The stronger frozen control also retained
@@ -86,11 +89,11 @@ frozen runs is a control comparison; encoder Shapley attribution requires Part C
 
 | Measurement | Recorded time |
 |---|---:|
-| Four base training runs | 121.77 s (2 min 1.77 s) |
-| Two sensitivity training runs | 26.69 s |
-| All six training runs | 148.47 s (2 min 28.47 s) |
-| Seven evaluations, including pretrained baseline | 273.38 s (4 min 33.38 s) |
-| Sum of recorded training and evaluation times | 421.85 s (7 min 1.85 s) |
+| Four base training runs | 117.63 s (1 min 57.63 s) |
+| Two sensitivity training runs | 25.65 s |
+| All six training runs | 143.29 s (2 min 23.29 s) |
+| Seven evaluations, including pretrained baseline | 260.26 s (4 min 20.26 s) |
+| Sum of recorded training and evaluation times | 403.55 s (6 min 43.55 s) |
 
 Training time is GPU-synchronized elapsed time, including batch loading and
 optimizer work; it is not pure kernel time. Package installation, dataset/weight
@@ -124,18 +127,33 @@ unique image IDs, class order/counts, EuroSAT train/test disjointness, row and
 sample counts, accuracy arithmetic, forgetting/timing consistency, initialization
 paths, the fallback condition and reported scale/text freeze flags.
 
-This review used metadata and aggregate accuracies. Checkpoint binaries, their
-sidecars/checksums and per-image predictions were not supplied for independent
-inspection. The flags report that the training implementation verified the
-frozen text tower. Part C should additionally verify unchanged text weights from
-the actual checkpoints and match its Pets before/after accuracies to this table.
-This is one seed with finite test subsets; no uncertainty intervals, significance
-claims or 56-pair validation are established by these results.
+### Checkpoint verification
 
-The subsequently supplied [checkpoint bundle](../kaggle_checkpoint_bundle/README.md)
-has now passed independent binary verification. It has the same accuracies and
-protocol, but different per-run timing records. That bundle and its sidecars are
-preserved separately; this earlier CSV and review remain unchanged.
+All six actual binaries passed independent CPU checks recorded in
+[checkpoint_verification.json](checkpoint_verification.json):
+
+- Actual SHA-256 matches every checkpoint's JSON sidecar.
+- Every branch's parent SHA-256 matches `theta_pets.pt`.
+- All 302 tensors per checkpoint have the expected ViT-B/32 shapes and float32
+  dtypes, and all floating-point weights are finite.
+- All checkpoints have bitwise identical logit-scale parameters.
+- Both frozen controls preserve all 149 text tensors bitwise; each updates the
+  152 vision tensors. Full-update branches change both towers.
+- The baseline, CSV, sidecar metrics, training IDs and protocol agree.
+
+The six binaries total 3,631,357,626 bytes (about 3.38 GiB). They remain local;
+the binary report stores the required checksums and comparison outcomes. The
+CPU exponential of the saved scale is approximately 100.0000076, consistent with
+the GPU-reported 100.0 within floating-point evaluation tolerance; the parameter
+bits themselves are unchanged.
+
+The verification downloaded no datasets or pretrained weights, performed no
+training and did not recompute test accuracies or encoder-swap predictions.
+Pets is the reference for frozen-weight comparisons. QuickGELU is established
+by the recorded training source and shared loader, since activations are not
+stored in checkpoint state dictionaries. Part C should match its Pets accuracies
+to this table. This is one seed with finite test subsets; no uncertainty intervals,
+significance claims or 56-pair validation are established by these results.
 
 ## Part C checkpoint handoff
 
@@ -148,11 +166,11 @@ The existing Part C notebook clones the default branch; select
 `shreyas/phase1-finetuning` in that checkout and install `requirements.txt` before
 running it, until the team merges these changes into `main`.
 
-After extracting the archive into a GPU environment and setting `CKPT_DIR` to
-the extracted checkpoint folder, run the base analysis with:
+After placing the verified `checkpoints/` folder in a GPU environment, run the
+base analysis from the repository root with:
 
 ```bash
-python scripts/run_swap.py --ckpt-dir "$CKPT_DIR" --out-dir results/swap/base --device cuda
+python scripts/run_swap.py --ckpt-dir checkpoints --out-dir results/swap/base --device cuda
 ```
 
 The base analysis should reproduce `A_pp=86.05%` for each pair and the relevant
@@ -168,7 +186,7 @@ from src.common import load_config
 from src.swap_shapley import run_pairs
 
 cfg = load_config()
-CKPT_DIR = "/path/to/extracted/checkpoints"  # Set to the actual GPU-environment path.
+CKPT_DIR = "checkpoints"  # Relative to the repository root in the GPU environment.
 run_pairs(
     [
         ("theta_pets.pt", "sensitivity_lr3e-5/theta_pets_eurosat.pt",

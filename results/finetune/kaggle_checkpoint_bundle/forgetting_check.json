@@ -1,8 +1,0 @@
-{
-  "base_pets_forgetting_pp": 0.7000000000000028,
-  "fallback_triggered": true,
-  "base_ratio_defined": false,
-  "note": "Sensitivity runs respond to a test metric; report separately as exploratory.",
-  "sensitivity_pets_forgetting_pp": 53.75,
-  "sensitivity_ratio_defined": true
-}

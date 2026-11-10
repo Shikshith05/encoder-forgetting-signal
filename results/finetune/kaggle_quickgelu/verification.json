@@ -1,12 +1,13 @@
 {
   "reviewed_on": "2026-11-10",
-  "review_status": "metadata consistency checks passed",
+  "review_status": "latest output metadata and actual checkpoint binaries verified",
   "source_code_sha256": "6731dd556992fe5296b2199fbaaf9dba8373b55e8de53d378dd272f1992fdbb2",
   "input_file_sha256": {
-    "training_results.csv": "0122c8aaea971ca990be3db9d99dc031f773974030c398423e8c0ff1822f3f60",
-    "forgetting_check.json": "d6a9d23573acff57b180dd879c6d3ec6c2132a419b274a83ee77dced1b064a91",
+    "training_results.csv": "100c375e8cd25e928ebc0f266a046e4616f1fe9434628371e14cc138791dd3eb",
     "protocol.json": "c9dce5ecfbf733d5c3916bddd3b53aaafa08efddc9de957f8241d36b1f514b7e",
-    "environment.json": "726f6c831c5b52dd3e51502b12b51a1af65b9cbd81cfba9b1c0cdc9fcdccd48c"
+    "environment.json": "726f6c831c5b52dd3e51502b12b51a1af65b9cbd81cfba9b1c0cdc9fcdccd48c",
+    "forgetting_check.json": "d6a9d23573acff57b180dd879c6d3ec6c2132a419b274a83ee77dced1b064a91",
+    "baseline.json": "f541b55ace38e1bcbf1d1fe0d9a007754e2db420d66ea44c583109bef659e26b"
   },
   "checks_passed": [
     "original input file bytes preserved",
@@ -25,21 +26,27 @@
     "accuracy forgetting and timing arithmetic consistent",
     "scale freeze flags reported true for all training rows",
     "text freeze flags reported true for both frozen controls",
-    "fallback condition and dominance-threshold flags consistent"
+    "fallback condition and dominance-threshold flags consistent",
+    "actual checkpoint SHA-256 matches every sidecar",
+    "all branch parent hashes match the original Pets checkpoint",
+    "all 302 tensors per checkpoint match CLIP schema and have finite weights",
+    "both text-frozen controls preserve all text weights bitwise",
+    "all checkpoints preserve the Pets logit-scale tensor bitwise",
+    "baseline JSON agrees with the latest CSV"
   ],
-  "checkpoint_binaries_independently_inspected": false,
-  "checkpoint_sidecars_independently_inspected": false,
+  "checkpoint_binaries_independently_inspected": true,
+  "checkpoint_sidecars_independently_inspected": true,
   "per_image_predictions_inspected": false,
   "base_training_runs": 4,
   "exploratory_sensitivity_runs": 2,
   "gpu": "Tesla T4",
   "training_seconds": {
-    "base": 121.77323139499975,
-    "sensitivity": 26.6948791210001,
-    "total": 148.46811051599985
+    "base": 117.63207906700006,
+    "sensitivity": 25.653648388999954,
+    "total": 143.28572745600002
   },
-  "evaluation_seconds": 273.376965165,
-  "training_plus_evaluation_seconds": 421.84507568099986,
+  "evaluation_seconds": 260.26119587700003,
+  "training_plus_evaluation_seconds": 403.54692333300005,
   "optimizer_updates": {
     "attempted_batches": 176,
     "skipped_updates": 21,
@@ -47,9 +54,12 @@
   },
   "pets_reference_accuracy_pct": 86.05,
   "notes": [
+    "This is the single current result record, using the latest uploaded checkpoint export.",
     "Base EuroSAT forgetting is 0.70 pp; its normalized dominance ratio is undefined under the agreed threshold.",
     "Sensitivity runs were triggered by a test metric and must be reported separately as exploratory.",
     "The stronger full update has severe Pets forgetting and lower EuroSAT accuracy than the base update.",
-    "Metadata review does not independently verify checkpoint bytes or establish encoder contributions."
-  ]
+    "Binary integrity is verified; image accuracies and encoder contributions were not recomputed during verification."
+  ],
+  "checkpoint_count": 6,
+  "checkpoint_verification_report": "checkpoint_verification.json"
 }
