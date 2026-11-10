@@ -1,4 +1,4 @@
-"""Bundle local Part B source into one self-contained Colab notebook (stdlib only)."""
+"""Bundle Part B source into one Kaggle/Colab notebook (stdlib only)."""
 from __future__ import annotations
 
 import json
@@ -19,7 +19,12 @@ def build() -> dict:
 
     add("markdown", """# Part B — CLIP fine-tuning · Shreyas K M
 
-Run this notebook in **Google Colab → Runtime → Change runtime type → GPU**.
+Run this notebook on **Kaggle (GPU accelerator, Internet on)** or
+**Google Colab (GPU runtime)**. It detects the platform automatically.
+On Kaggle, import this `.ipynb`, select an available GPU such as T4 ×2, enable
+Internet, then use **Save Version → Save & Run All** for the final recorded run.
+The code uses one GPU (`cuda:0`) even when Kaggle assigns two; no setting changes
+are needed. Packages, public CLIP weights and datasets require Internet access.
 The team's shared location is the GitHub repository. All training code is embedded
 below; cloning the repository is unnecessary. Parts A/C/D can import the same
 `src/common.py` after the corrected version is shared.
@@ -61,28 +66,56 @@ the full dataset archives. Initial installs/downloads are outside training time.
 """)
     add("code", """from pathlib import Path
 import os
-WORK_DIR = Path('/content/encoder-forgetting-signal-partb')
+import sys
+
+IS_KAGGLE = Path('/kaggle/working').is_dir()
+IS_COLAB = not IS_KAGGLE and Path('/content').is_dir()
+if IS_KAGGLE:
+    PLATFORM = 'Kaggle'
+    WORK_DIR = Path('/kaggle/working/encoder-forgetting-signal-partb')
+    DATA_DIR = Path('/tmp/encoder-forgetting-data')
+    EXPORT_DIR = Path('/kaggle/working')
+elif IS_COLAB:
+    PLATFORM = 'Colab'
+    WORK_DIR = Path('/content/encoder-forgetting-signal-partb')
+    DATA_DIR = Path('/content/encoder-forgetting-data')
+    EXPORT_DIR = WORK_DIR
+else:
+    PLATFORM = 'Local Jupyter'
+    WORK_DIR = Path.cwd() / '.notebook_partb'
+    DATA_DIR = WORK_DIR / 'data'
+    EXPORT_DIR = WORK_DIR
+
 WORK_DIR.mkdir(parents=True, exist_ok=True)
 os.chdir(WORK_DIR)
+if str(WORK_DIR) not in sys.path:
+    sys.path.insert(0, str(WORK_DIR))
 for directory in ('src', 'configs'):
     Path(directory).mkdir(exist_ok=True)
 Path('src/__init__.py').touch()
 
-# No Drive folder is required. Download results before the Colab runtime expires.
-# For persistence across runtime resets, optionally enable Drive.
+# Kaggle needs no Google Drive integration. Save a completed notebook version
+# with outputs and download its archive before discarding the session.
+# On Colab only, optionally enable Drive for persistence across runtime resets.
 USE_GOOGLE_DRIVE = False
 if USE_GOOGLE_DRIVE:
+    if not IS_COLAB:
+        raise ValueError('Google Drive mounting is supported here only on Colab.')
     from google.colab import drive
     drive.mount('/content/drive')
     OUTPUT_DIR = Path('/content/drive/MyDrive/PW26_VK_06/checkpoints_quickgelu')
 else:
     OUTPUT_DIR = WORK_DIR / 'artifacts' / 'checkpoints_quickgelu'
+print('Platform:', PLATFORM)
+print('Dataset cache (not exported on Kaggle):', DATA_DIR)
 print('Checkpoints and measured results:', OUTPUT_DIR)
 """)
     add("markdown", """## Shared implementation
 
-These cells materialize the embedded source under `/content`, keeping dataset I/O
-on the Colab disk. Checkpoints, metrics, and the protocol use `OUTPUT_DIR`.
+These cells materialize the source under `WORK_DIR`. Kaggle checkpoints and
+exports stay under `/kaggle/working`, while dataset downloads go to temporary
+storage outside the exported output tree. Colab uses its local `/content` disk.
+Checkpoints, metrics, and the protocol use `OUTPUT_DIR`.
 Expand these cells to inspect the exact training and split implementation.
 """)
     for filename in ("configs/config.yaml", "src/common.py", "src/finetune.py"):
@@ -93,8 +126,9 @@ from src.finetune import run_experiments
 
 assert torch.cuda.is_available(), 'Select a GPU runtime, then run again.'
 print('GPU:', torch.cuda.get_device_name(0))
+print('Visible GPUs:', torch.cuda.device_count(), '| Training uses cuda:0 only')
 cfg = load_config()
-cfg['data']['root'] = '/content/encoder-forgetting-data'
+cfg['data']['root'] = str(DATA_DIR)
 cfg['data']['num_workers'] = 2
 print('Base training settings:', cfg['finetune'])
 print('Prompt templates:', cfg['prompts'])
@@ -112,9 +146,10 @@ It excludes downloads, model loading, test evaluation, checksum verification and
 checkpoint writes. It is a feasibility measurement on the named GPU, not
 pure kernel time. `eval_seconds` and peak allocated GPU memory are also recorded.
 
-Local Colab files survive a browser disconnect only while the same runtime lives;
-they do not survive a runtime reset. Download artifacts when done, or enable the
-optional Drive destination before training if persistence is needed.
+Local session files are temporary. On Kaggle, save a completed notebook version
+with outputs and verify the files appear in its Output tab before ending the
+session. A draft/Quick Save of the code alone does not establish that artifacts
+are preserved. On Colab, download artifacts or use the optional Drive destination.
 
 Rerunning this cell reuses completed runs only when the protocol, installed package
 versions, parent hash and checkpoint checksum match. An interrupted training run
@@ -156,26 +191,56 @@ for file in sorted(OUTPUT_DIR.glob('theta_*.pt')):
 """)
     add("markdown", """## Download the artifacts
 
-The source notebook belongs in GitHub. Model checkpoints are large and are ignored
-by this repository's `.gitignore`; share the exported archive separately with the
-team. With local Colab storage, download it before ending/resetting the runtime.
-The archive includes checkpoints, tables and reproducibility metadata. Enable the
-switch below when ready; the archive can be several GB. If Drive is enabled,
-artifacts already persist at `OUTPUT_DIR`.
+The source notebook belongs in GitHub. Large model checkpoints remain ignored by
+Git; share the exported archive separately with the team. Kaggle automatically
+creates `/kaggle/working/part_b_artifacts.zip` below, containing checkpoints,
+tables and reproducibility metadata. After a successful **Save & Run All**, open
+the saved version's **Output** tab and download that archive. Confirm it exists
+before stopping the session. Dataset archives are excluded from this export.
+
+On Colab, set `DOWNLOAD_ARTIFACTS=True` below to create and download the archive.
+It can be several GB; allow the download to finish. If Drive is enabled, files
+also persist at `OUTPUT_DIR`. The export checks that all four base checkpoints,
+metrics and freeze checks exist; it is not a substitute for Part C analysis.
 """)
-    add("code", """DOWNLOAD_ARTIFACTS = False  # Set True after training, then run this cell.
+    add("code", """# Validate completion before exporting. This does not train or load models.
+import json
+from src.finetune import RUNS
+for _, _, filename, frozen in RUNS:
+    checkpoint = OUTPUT_DIR / filename
+    assert checkpoint.is_file(), f'Missing checkpoint: {checkpoint}'
+    metadata = json.loads(checkpoint.with_suffix('.json').read_text())
+    metrics = metadata['metrics']
+    assert metrics['logit_scale_frozen_verified'] is True
+    if frozen:
+        assert metrics['text_frozen_verified'] is True
+status = json.loads((OUTPUT_DIR / 'forgetting_check.json').read_text())
+if status['fallback_triggered']:
+    sensitivity = OUTPUT_DIR / 'sensitivity_lr3e-5'
+    for filename in ('theta_pets_eurosat.pt', 'theta_pets_eurosat_textfrozen.pt'):
+        assert (sensitivity / filename).is_file(), 'Finish the sensitivity cell before exporting.'
+for filename in ('training_results.csv', 'protocol.json', 'environment.json'):
+    assert (OUTPUT_DIR / filename).is_file(), f'Missing {filename}'
+print('All required base files and freeze checks are present.')
+print('Recorded source fingerprint:', json.loads((OUTPUT_DIR / 'protocol.json').read_text())['code_sha256'])
+
+DOWNLOAD_ARTIFACTS = IS_KAGGLE  # Kaggle exports automatically; enable manually on Colab.
 if DOWNLOAD_ARTIFACTS:
     import zipfile
-    from google.colab import files
-    archive = WORK_DIR / 'part_b_artifacts.zip'
+    archive = EXPORT_DIR / 'part_b_artifacts.zip'
     with zipfile.ZipFile(archive, 'w', compression=zipfile.ZIP_STORED) as bundle:
         for artifact in sorted(OUTPUT_DIR.rglob('*')):
             if artifact.is_file() and not artifact.name.endswith('.tmp'):
                 bundle.write(artifact, Path('checkpoints') / artifact.relative_to(OUTPUT_DIR))
-    files.download(str(archive))
+    if IS_COLAB:
+        from google.colab import files
+        files.download(str(archive))
+    else:
+        print('Artifact archive:', archive)
+        print('On Kaggle, save the completed version and download this file from Output.')
 else:
     print('Artifacts are at', OUTPUT_DIR)
-    print('Enable DOWNLOAD_ARTIFACTS to export them before this runtime expires.')
+    print('Enable DOWNLOAD_ARTIFACTS to export them before this session expires.')
 """)
     add("markdown", """## Demo, slides, report and viva
 

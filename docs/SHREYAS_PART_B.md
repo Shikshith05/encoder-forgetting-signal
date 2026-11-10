@@ -1,8 +1,13 @@
 # Shreyas — Phase-I implementation and handoff
 
-Use `notebooks/B_finetune_Shreyas.ipynb` as the single Colab entry point. It embeds
+Use `notebooks/B_finetune_Shreyas.ipynb` as the single Kaggle/Colab entry point. It embeds
 the code, fixed config, demo outline, slide notes, report guidance and viva answers.
 It runs without cloning GitHub. This repository has no measured GPU results yet.
+
+For Kaggle, follow [the complete run and handoff guide](KAGGLE_PART_B.md). The same
+notebook detects Kaggle, stores outputs under `/kaggle/working`, keeps dataset
+downloads in temporary storage, and exports without importing `google.colab`.
+Only one GPU is used even when the accelerator allocation contains two GPUs.
 
 The corrected loader explicitly sets `force_quick_gelu=True` for OpenAI weights.
 OpenCLIP 3.3 otherwise warns of an activation mismatch; CPU tests of the training

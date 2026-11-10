@@ -9,18 +9,21 @@ PES University Capstone PW26_VK_06.
 | C Swap + Shapley | Shikshith V |
 | D Confidence (ECE) | Mythri S |
 
-Shreyas's Part B is ready in [the self-contained Colab notebook](notebooks/B_finetune_Shreyas.ipynb).
-Open it in Colab, select a GPU, and run its cells. Drive is optional. The notebook
+Shreyas's Part B is ready in [the self-contained Kaggle/Colab notebook](notebooks/B_finetune_Shreyas.ipynb).
+On Kaggle, import it, select a GPU, enable Internet, and use **Save Version → Save & Run All**.
+Follow the [Kaggle steps through result verification and GitHub handoff](docs/KAGGLE_PART_B.md).
+On Colab, select a GPU and run its cells; Drive is optional. The notebook
 embeds all required Part B code and saves the four
 named checkpoints, measured training times, all four test accuracies and reproducible
 data manifests to `OUTPUT_DIR`. Download the artifact archive before ending a local
-Colab runtime. See [the implementation notes](docs/SHREYAS_PART_B.md).
+Colab runtime. Kaggle writes `part_b_artifacts.zip` under `/kaggle/working` for the
+saved version's Output tab. See [the implementation notes](docs/SHREYAS_PART_B.md).
 
 For a local CUDA environment:
 
 ```bash
 pip install -r requirements.txt
-python scripts/run_finetune.py --out-dir checkpoints --fallback
+python scripts/run_finetune.py --out-dir checkpoints/quickgelu --fallback
 ```
 
 The optional fallback adds a matched EuroSAT pair at lr 3e-5 only if base Pets
