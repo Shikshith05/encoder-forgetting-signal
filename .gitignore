@@ -9,4 +9,5 @@ __pycache__/
 .ipynb_checkpoints/
 .venv/
 .notebook_partb/
+/checkpoints(kaggle)/
 .DS_Store

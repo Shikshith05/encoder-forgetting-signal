@@ -132,6 +132,11 @@ the actual checkpoints and match its Pets before/after accuracies to this table.
 This is one seed with finite test subsets; no uncertainty intervals, significance
 claims or 56-pair validation are established by these results.
 
+The subsequently supplied [checkpoint bundle](../kaggle_checkpoint_bundle/README.md)
+has now passed independent binary verification. It has the same accuracies and
+protocol, but different per-run timing records. That bundle and its sidecars are
+preserved separately; this earlier CSV and review remain unchanged.
+
 ## Part C checkpoint handoff
 
 Keep the complete exported `checkpoints/` folder, including its

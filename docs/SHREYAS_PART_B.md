@@ -5,6 +5,9 @@ the code, fixed config, demo outline, slide notes, report guidance and viva answ
 It runs without cloning GitHub. [Verified Kaggle measurements and the Part C
 handoff](../results/finetune/kaggle_quickgelu/README.md) are now included: four base
 runs and the triggered two-run sensitivity check, with their original metadata.
+The subsequently uploaded [checkpoint bundle](../results/finetune/kaggle_checkpoint_bundle/README.md)
+has additionally passed actual binary checksum, shape, parent-link and frozen-text
+weight comparisons. Preserve each execution's own timing records when reporting.
 
 For Kaggle, follow [the complete run and handoff guide](KAGGLE_PART_B.md). The same
 notebook detects Kaggle, stores outputs under `/kaggle/working`, keeps dataset

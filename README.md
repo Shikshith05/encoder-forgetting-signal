@@ -35,6 +35,17 @@ Pets→EuroSAT forgetting was 0.70 percentage points; the exploratory lr-3e-5 ru
 increased it to 53.75 points while reducing target accuracy. Report the protocols
 separately. Part C now uses the shared QuickGELU-corrected loader for these checkpoints.
 
+The [uploaded checkpoint bundle](results/finetune/kaggle_checkpoint_bundle/README.md)
+has also passed binary checksum, model-shape and frozen-weight verification.
+To verify a local extracted bundle without a GPU or dataset downloads:
+
+```bash
+python scripts/verify_finetune_checkpoints.py "checkpoints(kaggle)" --report results/finetune/kaggle_checkpoint_bundle/checkpoint_verification.json
+```
+
+The large local `checkpoints(kaggle)/` folder is ignored by Git; only its small
+provenance/verification reports are committed.
+
 After changing shared source, rebuild the embedded notebook with
 `python scripts/build_finetune_notebook.py`. Validate with
 `python -m pytest -q`; Part B tests run on CPU without downloading datasets/weights.

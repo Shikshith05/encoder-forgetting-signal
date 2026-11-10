@@ -1,0 +1,12 @@
+{
+  "run": "pretrained",
+  "OxfordIIITPet_accuracy_pct": 85.6,
+  "OxfordIIITPet_test_images": 2000,
+  "Flowers102_accuracy_pct": 64.8,
+  "Flowers102_test_images": 2000,
+  "EuroSAT_accuracy_pct": 35.3,
+  "EuroSAT_test_images": 2000,
+  "DTD_accuracy_pct": 43.244680851063826,
+  "DTD_test_images": 1880,
+  "eval_seconds": 40.382648243000006
+}
