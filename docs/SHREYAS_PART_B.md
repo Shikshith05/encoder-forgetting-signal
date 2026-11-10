@@ -2,7 +2,9 @@
 
 Use `notebooks/B_finetune_Shreyas.ipynb` as the single Kaggle/Colab entry point. It embeds
 the code, fixed config, demo outline, slide notes, report guidance and viva answers.
-It runs without cloning GitHub. This repository has no measured GPU results yet.
+It runs without cloning GitHub. [Verified Kaggle measurements and the Part C
+handoff](../results/finetune/kaggle_quickgelu/README.md) are now included: four base
+runs and the triggered two-run sensitivity check, with their original metadata.
 
 For Kaggle, follow [the complete run and handoff guide](KAGGLE_PART_B.md). The same
 notebook detects Kaggle, stores outputs under `/kaggle/working`, keeps dataset
@@ -19,7 +21,8 @@ corrected loader with Parts A/C/D and recompute their affected features/results.
 
 1. Keep the notebook in the shared GitHub repository, then open it in Colab.
 2. Select a GPU. Artifacts default to local Colab storage; Drive is optional via
-   `USE_GOOGLE_DRIVE`. No shared Drive folder has been created or is required.
+   `USE_GOOGLE_DRIVE`. A team Drive folder can hold exported artifacts afterward;
+   Kaggle itself does not require Drive mounting.
 3. Run all cells. Downloading all four torchvision archives is required even
    though processing is capped at 2000 images per split. Keep data on `/content`.
 4. Retain the four base `.pt` files, their `.json` sidecars, `protocol.json`,

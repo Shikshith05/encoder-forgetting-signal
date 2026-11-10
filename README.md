@@ -27,8 +27,13 @@ python scripts/run_finetune.py --out-dir checkpoints/quickgelu --fallback
 ```
 
 The optional fallback adds a matched EuroSAT pair at lr 3e-5 only if base Pets
-forgetting is below 1 percentage point. Base results are retained. No GPU results
-are included until the real experiments are run.
+forgetting is below 1 percentage point. Base results are retained.
+
+[Verified Kaggle results](results/finetune/kaggle_quickgelu/README.md) record four
+base runs plus the triggered two-run sensitivity check on one Tesla T4. Base
+Pets→EuroSAT forgetting was 0.70 percentage points; the exploratory lr-3e-5 run
+increased it to 53.75 points while reducing target accuracy. Report the protocols
+separately. Part C now uses the shared QuickGELU-corrected loader for these checkpoints.
 
 After changing shared source, rebuild the embedded notebook with
 `python scripts/build_finetune_notebook.py`. Validate with

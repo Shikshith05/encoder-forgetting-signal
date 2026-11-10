@@ -1,0 +1,55 @@
+{
+  "reviewed_on": "2026-11-10",
+  "review_status": "metadata consistency checks passed",
+  "source_code_sha256": "6731dd556992fe5296b2199fbaaf9dba8373b55e8de53d378dd272f1992fdbb2",
+  "input_file_sha256": {
+    "training_results.csv": "0122c8aaea971ca990be3db9d99dc031f773974030c398423e8c0ff1822f3f60",
+    "forgetting_check.json": "d6a9d23573acff57b180dd879c6d3ec6c2132a419b274a83ee77dced1b064a91",
+    "protocol.json": "c9dce5ecfbf733d5c3916bddd3b53aaafa08efddc9de957f8241d36b1f514b7e",
+    "environment.json": "726f6c831c5b52dd3e51502b12b51a1af65b9cbd81cfba9b1c0cdc9fcdccd48c"
+  },
+  "checks_passed": [
+    "original input file bytes preserved",
+    "corrected common/finetune source fingerprint matches",
+    "environment package versions match protocol",
+    "shared config matches except runtime data path and worker setting",
+    "expected test/train sample and class counts",
+    "unique image IDs and class names",
+    "Flowers and EuroSAT class orders match shared loader",
+    "EuroSAT training and test index sets are disjoint",
+    "seven rows: pretrained plus four base and two sensitivity runs",
+    "all rows use the same test sample counts",
+    "accuracy values correspond to integer correct counts",
+    "agreed training settings and fresh-parent paths reported",
+    "base and sensitivity learning rates/path labels consistent",
+    "accuracy forgetting and timing arithmetic consistent",
+    "scale freeze flags reported true for all training rows",
+    "text freeze flags reported true for both frozen controls",
+    "fallback condition and dominance-threshold flags consistent"
+  ],
+  "checkpoint_binaries_independently_inspected": false,
+  "checkpoint_sidecars_independently_inspected": false,
+  "per_image_predictions_inspected": false,
+  "base_training_runs": 4,
+  "exploratory_sensitivity_runs": 2,
+  "gpu": "Tesla T4",
+  "training_seconds": {
+    "base": 121.77323139499975,
+    "sensitivity": 26.6948791210001,
+    "total": 148.46811051599985
+  },
+  "evaluation_seconds": 273.376965165,
+  "training_plus_evaluation_seconds": 421.84507568099986,
+  "optimizer_updates": {
+    "attempted_batches": 176,
+    "skipped_updates": 21,
+    "applied_updates": 155
+  },
+  "pets_reference_accuracy_pct": 86.05,
+  "notes": [
+    "Base EuroSAT forgetting is 0.70 pp; its normalized dominance ratio is undefined under the agreed threshold.",
+    "Sensitivity runs were triggered by a test metric and must be reported separately as exploratory.",
+    "The stronger full update has severe Pets forgetting and lower EuroSAT accuracy than the base update.",
+    "Metadata review does not independently verify checkpoint bytes or establish encoder contributions."
+  ]
+}
