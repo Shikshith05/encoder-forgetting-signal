@@ -195,7 +195,7 @@ def _read_state_dict(ckpt: str) -> Dict[str, Any]:
     # can move to src/common.py later
     import torch
 
-    state = torch.load(ckpt, map_location="cpu")
+    state = torch.load(ckpt, map_location="cpu", weights_only=True)
     if isinstance(state, dict):
         for key in ("state_dict", "model"):
             if key in state and isinstance(state[key], dict):
@@ -217,19 +217,11 @@ def _load_clip(
     Returns:
         (model, eval preprocess transform, tokenizer).
     """
-    # can move to src/common.py later
-    import open_clip
+    # Activation functions are not stored in checkpoints. Reuse Part B's
+    # corrected factory settings so both towers retain OpenAI QuickGELU.
+    from src.common import load_clip
 
-    cfg = cfg if cfg is not None else _load_config()
-    model_name = cfg["model"]["name"]
-    model, _, preprocess = open_clip.create_model_and_transforms(
-        model_name, pretrained=cfg["model"]["pretrained"]
-    )
-    if ckpt is not None:
-        model.load_state_dict(_read_state_dict(ckpt), strict=True)
-    model = model.to(device)
-    model.eval()
-    return model, preprocess, open_clip.get_tokenizer(model_name)
+    return load_clip(ckpt, device, cfg if cfg is not None else _load_config())
 
 
 def _pets_loader(preprocess: Any, cfg: Dict[str, Any]) -> Tuple[Any, List[str], List[str]]:

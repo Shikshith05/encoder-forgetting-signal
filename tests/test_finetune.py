@@ -240,11 +240,15 @@ def test_notebook_embeds_current_sources_and_valid_python():
 
 
 @pytest.mark.parametrize("checkpoint", [False, True])
-def test_shared_loader_matches_openai_activation(config, monkeypatch, tmp_path, checkpoint):
+@pytest.mark.parametrize("loader_name", ["common", "part_c"])
+def test_shared_loader_matches_openai_activation(config, monkeypatch, tmp_path, checkpoint, loader_name):
     """The pretrained factory default must not silently substitute GELU."""
     import open_clip
     from open_clip.model import CLIP
     from open_clip.transformer import QuickGELU
+    from src.swap_shapley import _load_clip
+
+    loader = common.load_clip if loader_name == "common" else _load_clip
 
     def factory(name, **kwargs):
         assert name == "ViT-B-32"
@@ -262,10 +266,10 @@ def test_shared_loader_matches_openai_activation(config, monkeypatch, tmp_path, 
 
     monkeypatch.setattr(open_clip, "create_model_and_transforms", factory)
     monkeypatch.setattr(open_clip, "get_tokenizer", lambda name: tokenize)
-    initial, _, _ = common.load_clip(device="cpu", cfg=config)
+    initial, _, _ = loader(device="cpu", cfg=config)
     path = tmp_path / "theta_pets.pt"
     if checkpoint:
         torch.save(initial.state_dict(), path)
-    model, _, _ = common.load_clip(str(path) if checkpoint else None, "cpu", config)
+    model, _, _ = loader(str(path) if checkpoint else None, "cpu", config)
     assert isinstance(model.visual.transformer.resblocks[0].mlp.gelu, QuickGELU)
     assert isinstance(model.transformer.resblocks[0].mlp.gelu, QuickGELU)
