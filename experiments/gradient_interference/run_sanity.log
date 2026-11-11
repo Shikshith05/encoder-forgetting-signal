@@ -1,0 +1,4 @@
+[17:01:36] GPU NVIDIA T1200 Laptop GPU; batch=64; K=4; float32
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[17:03:20] sanity: {'gradient_set': 'theta_EuroSAT on EuroSAT train', 'batch': 64, 'K': 4, 'max_abs_diff_V': 0.0, 'max_abs_grad_V': 0.3774817883968353, 'sign_agreement_V': 1.0, 'max_abs_diff_L': 0.0, 'max_abs_grad_L': 0.3254063129425049, 'sign_agreement_L': 1.0, 'max_abs_diff': 0.0, 'seconds': [49.51928810000027, 45.502282900000864]}
+[17:03:20] done in 1.7 min

@@ -1,0 +1,32 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[16:37:53] probe batch 64: OK, peak 2.99 GB, 93.1s
+[16:37:53] GPU NVIDIA T1200 Laptop GPU; batch=64; K=4; float32
+[16:38:46] O=OxfordIIITPet: g_O on OxfordIIITPet train: 49.3s, loss=0.3862, |V|=87849216, |L|=63428096
+[16:40:25] O=OxfordIIITPet: g_N on Flowers102 train: 98.6s, loss=2.7320
+[16:40:27]   OxfordIIITPet->Flowers102: I_adam_V=-3001 I_adam_L=-1916 cos_V=0.010 cos_L=0.068
+[16:41:02] O=OxfordIIITPet: g_N on EuroSAT train: 34.1s, loss=2.1385
+[16:41:03]   OxfordIIITPet->EuroSAT: I_adam_V=-3056 I_adam_L=-1004 cos_V=0.085 cos_L=0.028
+[16:43:06] O=OxfordIIITPet: g_N on DTD train: 122.2s, loss=3.1868
+[16:43:07]   OxfordIIITPet->DTD: I_adam_V=-1136 I_adam_L=-552.9 cos_V=0.000 cos_L=0.031
+[16:46:46] O=Flowers102: g_O on Flowers102 train: 215.2s, loss=0.4813, |V|=87849216, |L|=63428096
+[16:47:33] O=Flowers102: g_N on OxfordIIITPet train: 46.1s, loss=0.6525
+[16:47:34]   Flowers102->OxfordIIITPet: I_adam_V=-1284 I_adam_L=-1416 cos_V=0.022 cos_L=0.020
+[16:48:01] O=Flowers102: g_N on EuroSAT train: 26.1s, loss=2.5122
+[16:48:02]   Flowers102->EuroSAT: I_adam_V=1374 I_adam_L=-590.8 cos_V=0.005 cos_L=0.017
+[16:48:59] O=Flowers102: g_N on DTD train: 56.0s, loss=2.5980
+[16:49:00]   Flowers102->DTD: I_adam_V=1159 I_adam_L=-4221 cos_V=0.010 cos_L=0.085
+[16:49:31] O=EuroSAT: g_O on EuroSAT train: 25.8s, loss=0.1565, |V|=87849216, |L|=63428096
+[16:50:28] O=EuroSAT: g_N on OxfordIIITPet train: 56.7s, loss=0.8761
+[16:50:29]   EuroSAT->OxfordIIITPet: I_adam_V=672.9 I_adam_L=293.7 cos_V=0.023 cos_L=-0.018
+[16:54:07] O=EuroSAT: g_N on Flowers102 train: 217.2s, loss=2.5691
+[16:54:07]   EuroSAT->Flowers102: I_adam_V=-302.4 I_adam_L=-529.8 cos_V=0.031 cos_L=0.030
+[16:56:03] O=EuroSAT: g_N on DTD train: 114.9s, loss=2.3860
+[16:56:04]   EuroSAT->DTD: I_adam_V=-6844 I_adam_L=-186 cos_V=0.068 cos_L=0.016
+[16:57:09] O=DTD: g_O on DTD train: 61.5s, loss=0.9394, |V|=87849216, |L|=63428096
+[16:58:00] O=DTD: g_N on OxfordIIITPet train: 50.8s, loss=0.7466
+[16:58:02]   DTD->OxfordIIITPet: I_adam_V=-5266 I_adam_L=-1531 cos_V=0.135 cos_L=0.038
+[17:00:18] O=DTD: g_N on Flowers102 train: 135.5s, loss=2.1958
+[17:00:19]   DTD->Flowers102: I_adam_V=-1.134e+04 I_adam_L=-656 cos_V=0.089 cos_L=0.035
+[17:01:21] O=DTD: g_N on EuroSAT train: 61.2s, loss=2.2427
+[17:01:22]   DTD->EuroSAT: I_adam_V=-5125 I_adam_L=-1687 cos_V=0.064 cos_L=0.042
+[17:01:23] done in 25.1 min
