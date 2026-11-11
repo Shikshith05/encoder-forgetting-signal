@@ -32,6 +32,8 @@ DEFAULT_PAIRS: List[Tuple[str, str, str]] = [
     ("theta_pets.pt", "theta_pets_eurosat.pt", "Pets->EuroSAT"),
     ("theta_pets.pt", "theta_pets_flowers.pt", "Pets->Flowers"),
     ("theta_pets.pt", "theta_pets_eurosat_textfrozen.pt", "Pets->EuroSAT (text frozen)"),
+    ("theta_pets.pt", "sensitivity_lr3e-5/theta_pets_eurosat.pt", "Pets->EuroSAT (lr 3e-5)"),
+    ("theta_pets.pt", "sensitivity_lr3e-5/theta_pets_eurosat_textfrozen.pt", "Pets->EuroSAT text frozen (lr 3e-5)"),
 ]
 
 
