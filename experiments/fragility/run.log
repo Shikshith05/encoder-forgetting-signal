@@ -1,0 +1,14 @@
+[01:00:58] O=OxfordIIITPet sigma=1.0: clean=91.02 drop_V=11.77 drop_L=34.01 D_C=-0.486
+[01:00:58] O=OxfordIIITPet sigma=0.25: clean=91.02 drop_V=1.04 drop_L=2.55 D_C=-0.418
+[01:00:58] O=OxfordIIITPet sigma=0.5: clean=91.02 drop_V=3.43 drop_L=11.53 D_C=-0.542
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[01:01:22] O=Flowers102 sigma=1.0: clean=90.04 drop_V=23.38 drop_L=44.00 D_C=-0.306
+[01:01:22] O=Flowers102 sigma=0.25: clean=90.04 drop_V=1.04 drop_L=4.42 D_C=-0.621
+[01:01:22] O=Flowers102 sigma=0.5: clean=90.04 drop_V=5.20 drop_L=15.52 D_C=-0.498
+[01:01:42] O=EuroSAT sigma=1.0: clean=93.95 drop_V=2.74 drop_L=28.26 D_C=-0.823
+[01:01:43] O=EuroSAT sigma=0.25: clean=93.95 drop_V=0.33 drop_L=1.35 D_C=-0.605
+[01:01:43] O=EuroSAT sigma=0.5: clean=93.95 drop_V=0.58 drop_L=6.83 D_C=-0.844
+[01:02:05] O=DTD sigma=1.0: clean=79.10 drop_V=13.05 drop_L=47.36 D_C=-0.568
+[01:02:05] O=DTD sigma=0.25: clean=79.10 drop_V=0.25 drop_L=6.37 D_C=-0.923
+[01:02:06] O=DTD sigma=0.5: clean=79.10 drop_V=2.75 drop_L=20.13 D_C=-0.759
+[01:02:06] done in 1.6 min

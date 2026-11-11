@@ -1,0 +1,45 @@
+{
+  "primary": "D_C",
+  "dev_pass": false,
+  "results": [
+    {
+      "score": "D_C",
+      "sign_correct": 6,
+      "auroc": 0.16666666666666663,
+      "rho_D": -0.6261585997769192,
+      "p_D": 0.03569643035696431,
+      "loso": {
+        "OxfordIIITPet": 3,
+        "Flowers102": 2,
+        "EuroSAT": 0,
+        "DTD": 1
+      }
+    },
+    {
+      "score": "D_C_s0.25",
+      "sign_correct": 6,
+      "auroc": 0.33333333333333326,
+      "rho_D": -0.15114173098063566,
+      "p_D": 0.6548345165483451,
+      "loso": {
+        "OxfordIIITPet": 3,
+        "Flowers102": 2,
+        "EuroSAT": 0,
+        "DTD": 1
+      }
+    },
+    {
+      "score": "D_C_s0.5",
+      "sign_correct": 6,
+      "auroc": 0.16666666666666663,
+      "rho_D": -0.6261585997769192,
+      "p_D": 0.03569643035696431,
+      "loso": {
+        "OxfordIIITPet": 3,
+        "Flowers102": 2,
+        "EuroSAT": 0,
+        "DTD": 1
+      }
+    }
+  ]
+}
