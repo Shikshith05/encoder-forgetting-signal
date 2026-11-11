@@ -1,0 +1,32 @@
+{
+  "primary": "D_B",
+  "dev_pass": false,
+  "results": [
+    {
+      "score": "D_B",
+      "sign_correct": 8,
+      "auroc": 0.6666666666666667,
+      "rho_D": 0.25874125874125875,
+      "p_D": 0.41245875412458755,
+      "loso": {
+        "OxfordIIITPet": 3,
+        "Flowers102": 2,
+        "EuroSAT": 2,
+        "DTD": 1
+      }
+    },
+    {
+      "score": "D_B2_acc",
+      "sign_correct": 8,
+      "auroc": 0.7222222222222222,
+      "rho_D": 0.4755244755244756,
+      "p_D": 0.12478752124787522,
+      "loso": {
+        "OxfordIIITPet": 2,
+        "Flowers102": 1,
+        "EuroSAT": 2,
+        "DTD": 3
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[23:46:16] O=OxfordIIITPet: theta_O probe features I(512, 512) T(37, 512)
+  epoch 1, batch 1/8, loss=2.5232
+  epoch 1, batch 8/8, loss=2.8545
+[23:57:18]   OxfordIIITPet->Flowers102: D_B=-0.131 (M_F_V=0.02687, M_F_L=0.03499), skipped 5/8, acc total 30.47 pp, 663s
+  epoch 1, batch 1/8, loss=2.2665
+  epoch 1, batch 8/8, loss=2.0134
+[23:59:42]   OxfordIIITPet->EuroSAT: D_B=-0.619 (M_F_V=0.02134, M_F_L=0.09053), skipped 4/8, acc total 33.98 pp, 144s
+  epoch 1, batch 1/8, loss=3.4808
+  epoch 1, batch 8/8, loss=2.5860
+[00:05:43]   OxfordIIITPet->DTD: D_B=-0.429 (M_F_V=0.02684, M_F_L=0.06712), skipped 3/8, acc total 22.46 pp, 361s
+[00:06:06] O=Flowers102: theta_O probe features I(512, 512) T(102, 512)
+  epoch 1, batch 1/8, loss=0.7178
+  epoch 1, batch 8/8, loss=1.6698
+[00:11:06]   Flowers102->OxfordIIITPet: D_B=-0.125 (M_F_V=0.0303, M_F_L=0.03895), skipped 4/8, acc total 20.90 pp, 300s
+  epoch 1, batch 1/8, loss=2.6989
+  epoch 1, batch 8/8, loss=2.4726
+[00:13:36]   Flowers102->EuroSAT: D_B=-0.344 (M_F_V=0.04521, M_F_L=0.09267), skipped 5/8, acc total 65.82 pp, 150s
+  epoch 1, batch 1/8, loss=2.6866
+  epoch 1, batch 8/8, loss=2.3867
+[00:19:35]   Flowers102->DTD: D_B=-0.421 (M_F_V=0.02915, M_F_L=0.07155), skipped 4/8, acc total 41.99 pp, 358s
+[00:19:52] O=EuroSAT: theta_O probe features I(512, 512) T(10, 512)
+  epoch 1, batch 1/8, loss=1.0651
+  epoch 1, batch 8/8, loss=2.5536
+[00:24:49]   EuroSAT->OxfordIIITPet: D_B=-0.382 (M_F_V=0.01033, M_F_L=0.02311), skipped 4/8, acc total 19.73 pp, 297s
+  epoch 1, batch 1/8, loss=2.4416
+  epoch 1, batch 8/8, loss=2.9583
+[00:35:51]   EuroSAT->Flowers102: D_B=+0.673 (M_F_V=0.02383, M_F_L=0.004652), skipped 5/8, acc total 17.97 pp, 663s
+  epoch 1, batch 1/8, loss=2.5805
+  epoch 1, batch 8/8, loss=2.6456
+[00:41:40]   EuroSAT->DTD: D_B=+0.509 (M_F_V=0.04619, M_F_L=0.01505), skipped 4/8, acc total 28.32 pp, 349s
+[00:42:02] O=DTD: theta_O probe features I(512, 512) T(47, 512)
+  epoch 1, batch 1/8, loss=0.9418
+  epoch 1, batch 8/8, loss=1.8503
+[00:46:58]   DTD->OxfordIIITPet: D_B=+0.122 (M_F_V=0.01569, M_F_L=0.01227), skipped 4/8, acc total 27.93 pp, 295s
+  epoch 1, batch 1/8, loss=2.1243
+  epoch 1, batch 8/8, loss=3.5076
+[00:57:57]   DTD->Flowers102: D_B=-0.529 (M_F_V=0.01351, M_F_L=0.04385), skipped 4/8, acc total 25.98 pp, 659s
+  epoch 1, batch 1/8, loss=2.0287
+  epoch 1, batch 8/8, loss=2.6257
+[01:00:22]   DTD->EuroSAT: D_B=+0.017 (M_F_V=0.03966, M_F_L=0.03835), skipped 5/8, acc total 63.28 pp, 145s
+[01:00:22] done in 74.4 min
