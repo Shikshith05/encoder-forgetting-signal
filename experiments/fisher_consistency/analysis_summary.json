@@ -1,0 +1,58 @@
+{
+  "primary": "D_A",
+  "dev_pass": false,
+  "results": [
+    {
+      "score": "D_A",
+      "sign_correct": 7,
+      "auroc": 0.7777777777777778,
+      "rho_D": 0.5734265734265735,
+      "p_D": 0.05599440055994401,
+      "loso": {
+        "OxfordIIITPet": 0,
+        "Flowers102": 2,
+        "EuroSAT": 3,
+        "DTD": 2
+      }
+    },
+    {
+      "score": "D_A2_paramnorm",
+      "sign_correct": 7,
+      "auroc": 0.7777777777777778,
+      "rho_D": 0.5734265734265735,
+      "p_D": 0.05599440055994401,
+      "loso": {
+        "OxfordIIITPet": 0,
+        "Flowers102": 2,
+        "EuroSAT": 3,
+        "DTD": 2
+      }
+    },
+    {
+      "score": "D_A3_fisher_only",
+      "sign_correct": 6,
+      "auroc": 0.6666666666666667,
+      "rho_D": 0.41024184123315394,
+      "p_D": 0.1917808219178082,
+      "loso": {
+        "OxfordIIITPet": 0,
+        "Flowers102": 1,
+        "EuroSAT": 3,
+        "DTD": 2
+      }
+    },
+    {
+      "score": "D_A4_cons_only",
+      "sign_correct": 6,
+      "auroc": 0.638888888888889,
+      "rho_D": 0.1258741258741259,
+      "p_D": 0.7004299570042996,
+      "loso": {
+        "OxfordIIITPet": 0,
+        "Flowers102": 1,
+        "EuroSAT": 3,
+        "DTD": 2
+      }
+    }
+  ]
+}

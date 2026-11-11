@@ -1,0 +1,8 @@
+[23:23:00] waiting for A to finish
+[23:45:52] A finished: [23:45:04] done in 48.1 min
+[01:00:24] B exit=0
+[01:02:06] C exit=0
+[01:02:34] analyse fisher_consistency exit=0
+[01:02:51] analyse early_probe exit=0
+[01:03:05] analyse fragility exit=0
+[01:03:05] chain done

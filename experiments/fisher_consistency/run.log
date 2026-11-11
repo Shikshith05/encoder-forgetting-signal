@@ -1,0 +1,18 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[22:59:33] O=OxfordIIITPet: Fisher on 128 train imgs in 140.8s; sumF_V=1.061e+04 sumF_L=3784
+[23:05:49]   OxfordIIITPet->Flowers102: D_A=+0.336 (S_V=3138, S_L=1560) cons 372.4s
+[23:06:48]   OxfordIIITPet->EuroSAT: D_A=+0.345 (S_V=4324, S_L=2107) cons 56.4s
+[23:09:23]   OxfordIIITPet->DTD: D_A=+0.299 (S_V=3133, S_L=1690) cons 151.6s
+[23:18:45] O=Flowers102: Fisher on 128 train imgs in 551.8s; sumF_V=2.663e+04 sumF_L=1.652e+04
+[23:20:29]   Flowers102->OxfordIIITPet: D_A=-0.033 (S_V=5262, S_L=5617) cons 101.3s
+[23:21:23]   Flowers102->EuroSAT: D_A=+0.088 (S_V=1.306e+04, S_L=1.095e+04) cons 49.8s
+[23:25:27]   Flowers102->DTD: D_A=+0.087 (S_V=7655, S_L=6435) cons 242.0s
+[23:26:28] O=EuroSAT: Fisher on 128 train imgs in 54.5s; sumF_V=5858 sumF_L=446.1
+[23:28:00]   EuroSAT->OxfordIIITPet: D_A=+0.751 (S_V=1325, S_L=188.3) cons 88.8s
+[23:33:08]   EuroSAT->Flowers102: D_A=+0.776 (S_V=1477, S_L=186.3) cons 306.5s
+[23:34:59]   EuroSAT->DTD: D_A=+0.766 (S_V=1189, S_L=157.7) cons 108.8s
+[23:38:03] O=DTD: Fisher on 128 train imgs in 178.1s; sumF_V=1.738e+04 sumF_L=8440
+[23:40:12]   DTD->OxfordIIITPet: D_A=+0.174 (S_V=3875, S_L=2725) cons 128.2s
+[23:44:17]   DTD->Flowers102: D_A=+0.297 (S_V=4367, S_L=2368) cons 243.4s
+[23:45:03]   DTD->EuroSAT: D_A=+0.337 (S_V=7973, S_L=3957) cons 43.8s
+[23:45:04] done in 48.1 min
