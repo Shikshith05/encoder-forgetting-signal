@@ -1,0 +1,13 @@
+OxfordIIITPet->Flowers102 done
+OxfordIIITPet->EuroSAT done
+OxfordIIITPet->DTD done
+Flowers102->OxfordIIITPet done
+Flowers102->EuroSAT done
+Flowers102->DTD done
+EuroSAT->OxfordIIITPet done
+EuroSAT->Flowers102 done
+EuroSAT->DTD done
+DTD->OxfordIIITPet done
+DTD->Flowers102 done
+DTD->EuroSAT done
+seconds=25.9
