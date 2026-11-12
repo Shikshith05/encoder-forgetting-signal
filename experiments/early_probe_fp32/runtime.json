@@ -1,0 +1,10 @@
+{
+  "sessions": [
+    {
+      "seconds": 2642.2950872,
+      "gpu": "NVIDIA T1200 Laptop GPU",
+      "torch": "2.6.0+cu124",
+      "finished": "2026-11-12 13:26:19"
+    }
+  ]
+}

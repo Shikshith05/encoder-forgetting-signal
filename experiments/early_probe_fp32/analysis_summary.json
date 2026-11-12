@@ -1,0 +1,32 @@
+{
+  "primary": "D_B2fp32",
+  "dev_pass": true,
+  "results": [
+    {
+      "score": "D_B2fp32",
+      "sign_correct": 7,
+      "auroc": 0.8611111111111112,
+      "rho_D": 0.6363636363636365,
+      "p_D": 0.0331966803319668,
+      "loso": {
+        "OxfordIIITPet": 2,
+        "Flowers102": 2,
+        "EuroSAT": 2,
+        "DTD": 1
+      }
+    },
+    {
+      "score": "D_acc",
+      "sign_correct": 10,
+      "auroc": 0.888888888888889,
+      "rho_D": 0.7810870121972561,
+      "p_D": 0.0037996200379962005,
+      "loso": {
+        "OxfordIIITPet": 1,
+        "Flowers102": 3,
+        "EuroSAT": 3,
+        "DTD": 3
+      }
+    }
+  ]
+}

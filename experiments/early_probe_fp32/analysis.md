@@ -1,0 +1,83 @@
+# Signal B2-fp32: early probe, fp32, 8 real updates
+
+Pre-registration: `prereg_signal_b_fp32.md` (this folder; written before the run).
+Prediction: vision if score > 0 (0/NaN = wrong). DEV PASS = primary sign accuracy >= 11/12 OR primary AUROC > 0.833.
+
+## Per-pair table
+
+| O | N | M_F_V | M_F_L | updates | D_B2fp32 | true F_V | true F_L | true D | correct? |
+|---|---|---:|---:|---:|---:|---:|---:|---:|:-:|
+| OxfordIIITPet | Flowers102 | 0.02874 | 0.05732 | 8 | -0.332 | 4.50 | 23.30 | -0.676 | yes |
+| OxfordIIITPet | EuroSAT | 0.07973 | 0.0664 | 8 | +0.091 | 16.25 | 38.40 | -0.405 | no |
+| OxfordIIITPet | DTD | 0.019 | 0.07048 | 8 | -0.575 | 11.87 | 36.23 | -0.506 | yes |
+| Flowers102 | OxfordIIITPet | 0.01923 | 0.108 | 8 | -0.698 | 18.25 | 43.90 | -0.413 | yes |
+| Flowers102 | EuroSAT | 0.07192 | 0.07859 | 8 | -0.044 | 44.57 | 35.33 | +0.116 | no |
+| Flowers102 | DTD | 0.03267 | 0.08286 | 8 | -0.434 | 23.65 | 46.25 | -0.323 | yes |
+| EuroSAT | OxfordIIITPet | 0.02211 | 0.03401 | 8 | -0.212 | 36.10 | 9.70 | +0.576 | no |
+| EuroSAT | Flowers102 | 0.04379 | 0.02454 | 8 | +0.282 | 25.42 | 0.12 | +0.990 | yes |
+| EuroSAT | DTD | 0.06817 | 0.008574 | 8 | +0.777 | 62.38 | 3.52 | +0.893 | yes |
+| DTD | OxfordIIITPet | 0.01668 | 0.04198 | 8 | -0.431 | 9.10 | 32.50 | -0.563 | yes |
+| DTD | Flowers102 | 0.01562 | 0.03813 | 8 | -0.419 | 30.74 | 10.16 | +0.503 | no |
+| DTD | EuroSAT | 0.03836 | 0.0471 | 8 | -0.102 | 41.06 | 23.09 | +0.280 | no |
+
+## Secondary scores per pair (reported only)
+
+| O | N | D_acc | correct? |
+|---|---|---:|:-:|
+| OxfordIIITPet | Flowers102 | -0.287 | yes |
+| OxfordIIITPet | EuroSAT | +0.552 | no |
+| OxfordIIITPet | DTD | +0.079 | no |
+| Flowers102 | OxfordIIITPet | -0.614 | yes |
+| Flowers102 | EuroSAT | +0.175 | yes |
+| Flowers102 | DTD | -0.173 | yes |
+| EuroSAT | OxfordIIITPet | +0.102 | yes |
+| EuroSAT | Flowers102 | +1.000 | yes |
+| EuroSAT | DTD | +1.000 | yes |
+| DTD | OxfordIIITPet | -0.211 | yes |
+| DTD | Flowers102 | +0.286 | yes |
+| DTD | EuroSAT | +0.351 | yes |
+
+## Metrics vs baselines
+
+| score | sign acc | AUROC (D>0) | Spearman vs D (perm p) | dev pass? |
+|---|:-:|:-:|:-:|:-:|
+| D_B2fp32 (PRIMARY) | 7/12 | 0.861 | +0.636 (p=0.0332) | yes |
+| D_acc (secondary) | 10/12 | 0.889 | +0.781 (p=0.0038) | - |
+| baseline: gap_v - gap_l (threshold tuned on same data) | 10/12 | 0.833 | +0.501 (p=0.10) | - |
+| baseline: gradient interference, Adam (exp/gradient-interference) | 7/12 | 0.486 | +0.018 (p=0.96) | - |
+| baseline: A Fisher x consistency (exp/fisher-consistency) | 7/12 | 0.778 | +0.573 (p=0.056) | - |
+| baseline: B early probe, fp16, 3-5 real updates (exp/early-probe) | 8/12 | 0.667 | +0.259 (p=0.41) | - |
+| baseline: C fragility (exp/fragility) | 6/12 | 0.167 | -0.626 (p=0.036) | - |
+
+Spearman p: two-sided permutation, 10,000 permutations, seed 0.
+
+## Leave-one-source-out (sign accuracy on the 3 pairs of each held-out O; nothing fitted)
+
+| held-out O | D_B2fp32 | D_acc |
+|---|:-:|:-:|
+| OxfordIIITPet | 2/3 | 1/3 |
+| Flowers102 | 2/3 | 3/3 |
+| EuroSAT | 2/3 | 3/3 |
+| DTD | 1/3 | 3/3 |
+
+## Extra Spearman (reported only, not used for pass)
+
+| signal column | ground truth | Spearman (perm p) |
+|---|---|:-:|
+| M_total | total | +0.615 (p=0.0388) |
+| M_F_V | F_V | +0.413 (p=0.1904) |
+| M_F_L | F_L | +0.937 (p=0.0001) |
+| probe_total | total | +0.650 (p=0.0257) |
+
+## Notes
+
+- Secondary Spearman of probe M_total vs true total: this relation was already seen in signal B on these same 12 pairs (rho +0.71, p = 0.014), so it is NOT independent evidence.
+- B2-fp32 is a second attempt at the probe idea on the same 12 development pairs, after B's result was seen; even a dev pass is weaker evidence than a first attempt.
+
+## Verdict
+
+**DEV PASS: promising on dev only** (primary D_B2fp32: 7/12, AUROC 0.861).
+
+## Caveats
+
+> Exploratory: 12 pairs from 4 datasets (not independent), single seed. These 12 pairs are a development set already used by the gap and gradient-interference signals. A dev pass is 'promising on dev only', not a confirmation.
