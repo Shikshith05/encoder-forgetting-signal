@@ -1,0 +1,21 @@
+pair,swap_condition,accuracy_pct,ece,confident_wrong_rate_pct,n_high_conf
+Pets->EuroSAT,pp,86.05,0.0239,2.95,1288
+Pets->EuroSAT,pf,85.25,0.0209,1.15,1126
+Pets->EuroSAT,fp,85.85,0.0167,2.67,1275
+Pets->EuroSAT,ff,85.35,0.0172,1.88,1115
+Pets->Flowers,pp,86.05,0.0239,2.95,1288
+Pets->Flowers,pf,84.45,0.0441,5.65,1275
+Pets->Flowers,fp,85.8,0.0263,2.89,1279
+Pets->Flowers,ff,83.65,0.0586,6.38,1301
+Pets->EuroSAT (text frozen),pp,86.05,0.0239,2.95,1288
+Pets->EuroSAT (text frozen),pf,86.05,0.0239,2.95,1288
+Pets->EuroSAT (text frozen),fp,86.6,0.0232,3.04,1283
+Pets->EuroSAT (text frozen),ff,86.6,0.0232,3.04,1283
+Pets->EuroSAT (lr 3e-5),pp,86.05,0.0239,2.95,1288
+Pets->EuroSAT (lr 3e-5),pf,43.85,0.1723,0.0,0
+Pets->EuroSAT (lr 3e-5),fp,69.3,0.0416,6.51,645
+Pets->EuroSAT (lr 3e-5),ff,32.3,0.1317,0.0,0
+Pets->EuroSAT text frozen (lr 3e-5),pp,86.05,0.0239,2.95,1288
+Pets->EuroSAT text frozen (lr 3e-5),pf,86.05,0.0239,2.95,1288
+Pets->EuroSAT text frozen (lr 3e-5),fp,59.25,0.049,11.54,416
+Pets->EuroSAT text frozen (lr 3e-5),ff,59.25,0.049,11.54,416
